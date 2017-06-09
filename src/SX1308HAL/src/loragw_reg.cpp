@@ -10,9 +10,13 @@
 */
 #include "SX1308.h"
 #include "loragw_reg.h"
-#include "CmdUSB.h"
-#include "loragw_hal.h"
 #include "board.h"
+
+/* -------------------------------------------------------------------------- */
+/* --- PRIVATE CONSTANTS ---------------------------------------------------- */
+
+#define PAGE_ADDR        0x00
+#define PAGE_MASK        0x03
 
 const struct lgw_reg_s loregs[LGW_TOTALREGS] = {
     {-1, 0, 0, 0, 2, 0, 0},   /* PAGE_REG */
@@ -342,28 +346,31 @@ const struct lgw_reg_s loregs[LGW_TOTALREGS] = {
     {2, 97, 0, 0, 5, 1, 0},  /* DATA_MNGT_CPT_FRAME_READEN */
     {1, 33, 0, 0, 8, 0, 0}   /* TX_TRIG_ALL (alias) */
 };
-#define PAGE_ADDR        0x00
-#define PAGE_MASK        0x03
+
+/* -------------------------------------------------------------------------- */
+/* --- PRIVATE VARIABLES ---------------------------------------------------- */
 
 static int lgw_regpage = -1; /*! keep the value of the register page selected */
 
+/* -------------------------------------------------------------------------- */
+/* --- PRIVATE FUNCTIONS ---------------------------------------------------- */
+
 int page_switch(uint8_t target) {
     lgw_regpage = PAGE_MASK & target;
-    Sx1308.lgw_currentpage =  lgw_regpage;
-    Sx1308.spiWrite( PAGE_ADDR, (uint8_t)lgw_regpage);
-    return LGW_REG_SUCCESS;
-}
-
-/* soft-reset function */
-int lgw_soft_reset(void) {
-
-    Sx1308.spiWrite( 0, 0x80); /* 1 -> SOFT_RESET bit */
-    lgw_regpage = 0; /* reset the paging static variable */
+    Sx1308.spiWrite(PAGE_ADDR, (uint8_t)lgw_regpage);
     return LGW_REG_SUCCESS;
 }
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
+/* soft-reset function */
+int lgw_soft_reset(void) {
+    Sx1308.spiWrite(0, 0x80); /* 1 -> SOFT_RESET bit */
+    lgw_regpage = 0; /* reset the paging static variable */
+    return LGW_REG_SUCCESS;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 int reg_w_align32(void *spi_target, uint8_t spi_mux_mode, uint8_t spi_mux_target, struct lgw_reg_s r, int32_t reg_value) {
     int i, size_byte;
@@ -388,7 +395,7 @@ int reg_w_align32(void *spi_target, uint8_t spi_mux_mode, uint8_t spi_mux_target
             buf[i] = (uint8_t)(0x000000FF & reg_value);
             reg_value = (reg_value >> 8);
         }
-        Sx1308.spiWriteBurstuint8( r.addr, buf, size_byte);
+        Sx1308.spiWriteBurst( r.addr, buf, size_byte);
     } else {
         /* register spanning multiple memory bytes but with an offset */
 
@@ -398,7 +405,7 @@ int reg_w_align32(void *spi_target, uint8_t spi_mux_mode, uint8_t spi_mux_target
     return LGW_REG_SUCCESS;
 }
 
-
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
 int reg_r_align32(void *spi_target, uint8_t spi_mux_mode, uint8_t spi_mux_target, struct lgw_reg_s r, int32_t *reg_value) {
     uint8_t bufu[4] = {0, 0, 0, 0};
@@ -438,8 +445,19 @@ int reg_r_align32(void *spi_target, uint8_t spi_mux_mode, uint8_t spi_mux_target
     return LGW_REG_SUCCESS;
 }
 
-int lgw_reg_w(uint16_t register_id, int32_t reg_value)
-{
+/* -------------------------------------------------------------------------- */
+/* --- PUBLIC FUNCTIONS DEFINITION ------------------------------------------ */
+
+int lgw_connect(void) {
+    Sx1308.init();
+    Sx1308.spiWrite(LGW_PAGE_REG, 0);
+    
+    return LGW_REG_SUCCESS;
+}
+
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+int lgw_reg_w(uint16_t register_id, int32_t reg_value) {
     struct lgw_reg_s r;
 
     /* check input parameters */
@@ -453,8 +471,7 @@ int lgw_reg_w(uint16_t register_id, int32_t reg_value)
         return LGW_REG_SUCCESS;
     } else if (register_id == LGW_SOFT_RESET) {
         /* only reset if lsb is 1 */
-        if ((reg_value & 0x01) != 0)
-        {
+        if ((reg_value & 0x01) != 0) {
             return LGW_REG_SUCCESS;
         }
     }
@@ -478,16 +495,9 @@ int lgw_reg_w(uint16_t register_id, int32_t reg_value)
     return LGW_REG_SUCCESS;
 }
 
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
 
-
-/**
-@brief LoRa concentrator register read
-@param register_id register number in the data structure describing registers
-@param reg_value pointer to a variable where to write register read value
-@return status of register operation (LGW_REG_SUCCESS/LGW_REG_ERROR)
-*/
-int lgw_reg_r(uint16_t register_id, int32_t *reg_value)
-{
+int lgw_reg_r(uint16_t register_id, int32_t *reg_value) {
     struct lgw_reg_s r;
 
     /* get register struct from the struct array */
@@ -504,15 +514,9 @@ int lgw_reg_r(uint16_t register_id, int32_t *reg_value)
 
 }
 
-/**
-@brief LoRa concentrator register burst write
-@param register_id register number in the data structure describing registers
-@param data pointer to byte array that will be sent to the LoRa concentrator
-@param size size of the transfer, in byte(s)
-@return status of register operation (LGW_REG_SUCCESS/LGW_REG_ERROR)
-*/
-int lgw_reg_wb(uint16_t register_id, uint8_t *data, uint16_t size)
-{
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+int lgw_reg_wb(uint16_t register_id, uint8_t *data, uint16_t size) {
     struct lgw_reg_s r;
 
     /* check input parameters */
@@ -540,21 +544,15 @@ int lgw_reg_wb(uint16_t register_id, uint8_t *data, uint16_t size)
     }
 
     /* do the burst write */
-    Sx1308.spiWriteBurstuint8( r.addr, data, size);
+    Sx1308.spiWriteBurst(r.addr, data, size);
 
     return LGW_REG_SUCCESS;
 
 }
 
-/**
-@brief LoRa concentrator register burst read
-@param register_id register number in the data structure describing registers
-@param data pointer to byte array that will be written from the LoRa concentrator
-@param size size of the transfer, in byte(s)
-@return status of register operation (LGW_REG_SUCCESS/LGW_REG_ERROR)
-*/
-int lgw_reg_rb(uint16_t register_id, uint8_t *data, uint16_t size)
-{
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+int lgw_reg_rb(uint16_t register_id, uint8_t *data, uint16_t size) {
     struct lgw_reg_s r;
 
     /* check input parameters */

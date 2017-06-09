@@ -56,7 +56,7 @@ void SystemClock_Config(void);
                        LL Driver Callbacks (PCD -> USB Device Library)
 *******************************************************************************/
 /* MSP Init */
-Serial pcf (PB_6,PB_7);
+
 #include "CmdUSB.h"
 
 void HAL_PCD_MspInit(PCD_HandleTypeDef* pcdHandle)
@@ -133,35 +133,38 @@ void HAL_PCD_SetupStageCallback(PCD_HandleTypeDef *hpcd)
   * @retval None
   */
 void HAL_PCD_DataOutStageCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
-{int i;
-	int size=0;
-	static int count =0;
-	static int firsttime=1;
-	 __disable_irq();    // Disable Interrupts
-	if (epnum==1)
-	{
-	for (i=0;i<64;i++)  //64 transfer length hardcode but faster in it
-	{
-		Usbmanager.BufFromHost[i+64*count]=Usbmanager.BufFromHosttemp[i];
-	}
-	size=(Usbmanager.BufFromHost[1]<<8)+Usbmanager.BufFromHost[2]+4;
-	if ((firsttime==1)&&((Usbmanager.BufFromHost[0]=='a')||(Usbmanager.BufFromHost[0]=='x')||(Usbmanager.BufFromHost[0]=='c')||(Usbmanager.BufFromHost[0]=='h')||(Usbmanager.BufFromHost[0]=='y')||(Usbmanager.BufFromHost[0]=='z')||(Usbmanager.BufFromHost[0]=='f')||(Usbmanager.BufFromHost[0]=='b')))
-	{ firsttime=0;
-		
-		if (size>64)
-		{
-			Usbmanager.count=((size-1)>>6)+1;
-		}	
-	}
-		count++;
-		Usbmanager.count--;
-	  if (Usbmanager.count==0)
-		{count=0;
-		 firsttime=1;    	
-		}
-	 }
-	USBD_LL_DataOutStage((USBD_HandleTypeDef *)hpcd->pData, epnum, hpcd->OUT_ep[epnum].xfer_buff);
-   __enable_irq();    // Disable Interrupts
+{
+  int i;
+  int size = 0;
+  static int count = 0;
+  static int firsttime = 1;
+
+  __disable_irq(); // Disable Interrupts
+  if (epnum == 1)
+  {
+    for (i = 0; i < 64; i++) //64 transfer length hardcode but faster in it
+    {
+      CmdManager.BufFromHost[i+64*count] = CmdManager.BufFromHostChunk[i];
+    }
+    size = (CmdManager.BufFromHost[1]<<8) + CmdManager.BufFromHost[2] + CMD_HEADER_RX_SIZE;
+    if ((firsttime==1) && (CmdManager.CheckCmd(CmdManager.BufFromHost[0]) == true))
+    {
+      firsttime = 0;
+      if (size > 64)
+      {
+        CmdManager.count = ((size-1)>>6) + 1;
+      }
+    }
+    count++;
+    CmdManager.count--;
+    if (CmdManager.count == 0)
+    {
+      count = 0;
+      firsttime=1;
+    }
+  }
+  USBD_LL_DataOutStage((USBD_HandleTypeDef *)hpcd->pData, epnum, hpcd->OUT_ep[epnum].xfer_buff);
+  __enable_irq();  // Disable Interrupts
 }
 
 /**
@@ -182,7 +185,6 @@ void HAL_PCD_DataInStageCallback(PCD_HandleTypeDef *hpcd, uint8_t epnum)
   */
 void HAL_PCD_SOFCallback(PCD_HandleTypeDef *hpcd)
 {
-  pcf.printf("sof interrupt\n");
   USBD_LL_SOF((USBD_HandleTypeDef *)hpcd->pData);
 }
 
