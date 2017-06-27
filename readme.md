@@ -133,6 +133,11 @@ provided by STmicroelectronics.
 ## 5. Changelog
 ---------------
 
+### v0.1.1  ###
+
+* Disabled USB vbus sensing
+* Moved delay to wait for COM bridge to be initialized in CMDMANAGER::Init().
+
 ### v0.1.0  ###
 
 * Code clean-up, refactoring

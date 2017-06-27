@@ -16,6 +16,9 @@
 #include "mbed.h"
 #include "board.h"
 
+#define DELAY_COM_INIT 1000
+#define DELAY_RESET 200
+
 /*
 /Class INTERFACE definition
 */
@@ -124,6 +127,7 @@ void CMDMANAGER::InitBufToHost() {
 
 void CMDMANAGER::Init() {
     ActiveInterface->Init();
+    wait_ms(DELAY_COM_INIT);
 }
 
 void CMDMANAGER::ReceiveCmd (){
@@ -147,7 +151,7 @@ void CMDMANAGER::TransmitCmd (){
     ActiveInterface->Transmit(BufToHost, size);
     /* Check if a reset has been requested */
     if (kill == true) {
-        wait_ms(200);
+        wait_ms(DELAY_RESET);
         NVIC_SystemReset();
     }
 }

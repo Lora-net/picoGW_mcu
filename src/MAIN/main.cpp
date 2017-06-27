@@ -51,7 +51,6 @@ int main(void) {
     /* Initialize the concentrator */
     lgw_connect();
     CmdManager.Init();
-    wait_ms(1000);
 
     /* Wait for commands coming from host */
     while (1) {
