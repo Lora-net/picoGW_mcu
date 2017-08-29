@@ -127,7 +127,7 @@ provided by STmicroelectronics.
 ## 4. User Guide
 ----------------
 
-[A detailed PicoCell GW user guide is available here](http://www.semtech.com/images/datasheet/picocell_gateway_user_guide.pdf)
+[A detailed PicoCell GW user guide is available here](http://www.semtech.com/images/datasheet/PicoCell_Gateway_V1_0_User_Guide_V1_1.pdf)
 
 
 ## 5. Changelog
