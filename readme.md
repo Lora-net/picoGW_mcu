@@ -133,6 +133,11 @@ provided by STmicroelectronics.
 ## 5. Changelog
 ---------------
 
+### v0.2.0  ###
+
+* Reverted AGC firmware from version 5 back to version 4.
+* Updated MCU FW version to match with picoGW_hal
+
 ### v0.1.1  ###
 
 * Disabled USB vbus sensing

@@ -29,7 +29,7 @@
 #define CMD_K0             0
 #define ACK_OK             1
 #define ACK_K0             0
-#define FWVERSION          0x010a0004
+#define FWVERSION          0x010a0005
 #define ISUARTINTERFACE    1
 #define ISUSBINTERFACE     0
 
