@@ -56,14 +56,14 @@
 /** @defgroup USBD_DESC_Private_Defines
   * @{
   */ 
-#define USBD_VID     0x047A //semtech vid //st micro vid 0x0483
-#define USBD_LANGID_STRING     1033
-#define USBD_MANUFACTURER_STRING     "SEMTECH"
-#define USBD_PID_FS     0x374A  //22336
-#define USBD_PRODUCT_STRING_FS     "SEMTECH Corp Virtual ComPort"
-#define USBD_SERIALNUMBER_STRING_FS     "00000000001A"
-#define USBD_CONFIGURATION_STRING_FS     "CDC Config"
-#define USBD_INTERFACE_STRING_FS     "CDC Interface"
+#define USBD_VID                      0x0483
+#define USBD_PID_FS                   0x5740
+#define USBD_LANGID_STRING            0x409
+#define USBD_MANUFACTURER_STRING      "STMicroelectronics"
+#define USBD_PRODUCT_STRING_FS        "SEMTECH PicoGW Virtual ComPort"
+#define USBD_SERIALNUMBER_STRING_FS   "3EA5F0C2B81C"
+#define USBD_CONFIGURATION_STRING_FS  "CDC Config"
+#define USBD_INTERFACE_STRING_FS      "CDC Interface"
 
 #define USB_SIZ_BOS_DESC            0x0C
 

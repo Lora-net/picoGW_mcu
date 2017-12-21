@@ -44,7 +44,7 @@ int main(void) {
     /* Check if it is requested to jump to the bootloader (for reflashing...) */
     dataflash = *(uint8_t *)DATA_EEPROM_BASE;
     if (dataflash == GOTO_BOOTLOADER) {
-        FLASH_Prog(DATA_EEPROM_BASE, 0);
+        FLASH_Prog(DATA_EEPROM_BASE, 0xFF);
         ((void (*)(void)) * ((uint32_t*) BOOTLOADER_ADDR))();
     }
 

@@ -368,15 +368,30 @@ void SystemInit(void)
 	
 
 	
-  HAL_Init();
 
+    HAL_Init();
+    NVIC_DisableIRQ;
+    __GPIOA_CLK_ENABLE();
+    GPIO_InitTypeDef GPIO_InitStruct;
+    GPIO_InitStruct.Pin = GPIO_PIN_0;
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Pull = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
+    HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_SET);
+    for  (int i = 0;i<100000;i++){__NOP;}
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
   /* Configure the System clock source, PLL Multiplier and Divider factors,
      AHB/APBx prescalers and Flash settings */
-  SetSysClock();
-  
-  /* Reset the timer to avoid issues after the RAM initialization */
-  TIM_MST_RESET_ON;
-  TIM_MST_RESET_OFF;  
+     for  (int i = 0;i<100000;i++){__NOP;}
+    SetSysClock();
+//  
+//  /* Reset the timer to avoid issues after the RAM initialization */
+    TIM_MST_RESET_ON;
+    TIM_MST_RESET_OFF;  
+    NVIC_EnableIRQ;
+
+
 }
 
 /**

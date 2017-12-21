@@ -133,6 +133,15 @@ provided by STmicroelectronics.
 ## 5. Changelog
 ---------------
 
+### v0.2.1  ###
+
+* Added a delay in the MCU init procedure to ensure that HSE (32MHz external
+clock) input is selected before starting USB enumeration.
+* Reset the SX1257 radios to fix a potential bad POR (Power-On Reset) condition
+when there are no Schottky diodes placed on the SX1257 radios reset line.
+* Unify the USB VID/PID values between the Linux version and Windows
+(picoGW_UI tool) version.
+
 ### v0.2.0  ###
 
 * Reverted AGC firmware from version 5 back to version 4.
