@@ -7,7 +7,7 @@
   (C)2017 Semtech
 */
 
-#include "SX1308.h"
+#include "sx1308.h"
 #include "mbed.h"
 #include "board.h"
 #include "loragw_hal.h"

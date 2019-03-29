@@ -12,7 +12,7 @@
 #include "usb_device.h"
 #include "usbd_cdc_if.h"
 #include "string.h"
-#include "CmdUSB.h"
+#include "cmdUSB.h"
 #include "board.h"
 
 #include "loragw_reg.h"

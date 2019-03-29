@@ -11,7 +11,7 @@
 #define USBMANAGER_H
 
 #include "mbed.h"
-#include "SX1308.h"
+#include "sx1308.h"
 
 #define ATOMICTX 900
 #define ATOMICRX 600
