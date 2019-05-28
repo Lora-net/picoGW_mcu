@@ -112,21 +112,23 @@ static uint64_t fsk_sync_word = 0xC194C1; /* default FSK sync word (ALIGNED RIGH
 static bool lorawan_public = true;
 
 static struct lgw_tx_gain_lut_s txgain_lut = {
-    .size = 2,
-    .lut[0] = {
-        .dig_gain = 0,
-        .pa_gain = 2,
-        .dac_gain = 3,
-        .mix_gain = 10,
-        .rf_power = 14
+    {
+        /* .lut[0] */ {
+            /* .dig_gain */ 0,
+            /* .pa_gain */ 2,
+            /* .dac_gain */ 3,
+            /* .mix_gain */ 10,
+            /* .rf_power */ 14
+        },
+        /* .lut[1] */ {
+            /* .dig_gain */ 0,
+            /* .pa_gain */ 3,
+            /* .dac_gain */ 3,
+            /* .mix_gain */ 14,
+            /* .rf_power */ 27
+        }
     },
-    .lut[1] = {
-        .dig_gain = 0,
-        .pa_gain = 3,
-        .dac_gain = 3,
-        .mix_gain = 14,
-        .rf_power = 27
-    }
+    /* .size */ 2,
 };
 
 /* TX I/Q imbalance coefficients for mixer gain = 8 to 15 */

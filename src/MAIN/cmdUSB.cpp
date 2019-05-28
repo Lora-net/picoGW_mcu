@@ -8,7 +8,7 @@
 
 */
 
-#include "CmdUSB.h"
+#include "cmdUSB.h"
 #include "usb_device.h"
 #include "usbd_cdc_if.h"
 #include "loragw_hal.h"

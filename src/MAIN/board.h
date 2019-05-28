@@ -10,7 +10,7 @@
 #define BOARD_H
 
 #include "mbed.h"
-#include "SX1308.h"
+#include "sx1308.h"
 
 //#define USE_UART 1
 

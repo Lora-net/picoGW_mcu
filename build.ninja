@@ -1,0 +1,446 @@
+# Used compiler:
+#   url: https://developer.arm.com/-/media/Files/downloads/gnu-rm/6-2017q2/gcc-arm-none-eabi-6-2017-q2-update-linux.tar.bz2
+#   md5sum: 13747255194398ee08b3ba42e40e9465
+# Used hex2dfu tool:
+#   url: https://github.com/plietar/dfuse-tool
+#   commit: e2b1c1c7f743f8f15a2d988476567470e3422aaa
+
+# Toolchain
+cc = arm-none-eabi-gcc
+cpp = arm-none-eabi-cpp
+cxx = arm-none-eabi-g++ -fpermissive
+ld = arm-none-eabi-gcc
+
+objs = $
+  bin/analogin.o $
+  bin/analogin_api.o $
+  bin/analogout_api.o $
+  bin/board.o $
+  bin/busin.o $
+  bin/businout.o $
+  bin/busout.o $
+  bin/callchain.o $
+  bin/can.o $
+  bin/can_api.o $
+  bin/cmdusb.o $
+  bin/cmsis_nvic.o $
+  bin/entropy_hardware_poll.o $
+  bin/ethernet.o $
+  bin/filebase.o $
+  bin/filelike.o $
+  bin/filepath.o $
+  bin/filesystemlike.o $
+  bin/gpio_api.o $
+  bin/gpio_irq_api.o $
+  bin/hal_tick.o $
+  bin/i2c.o $
+  bin/i2c_api.o $
+  bin/i2cslave.o $
+  bin/interruptin.o $
+  bin/interruptmanager.o $
+  bin/localfilesystem.o $
+  bin/loragw_hal.o $
+  bin/loragw_reg.o $
+  bin/main.o $
+  bin/mbed_alloc_wrappers.o $
+  bin/mbed_assert.o $
+  bin/mbed_board.o $
+  bin/mbed_critical.o $
+  bin/mbed_error.o $
+  bin/mbed_gpio.o $
+  bin/mbed_interface.o $
+  bin/mbed_lp_ticker_api.o $
+  bin/mbed_mem_trace.o $
+  bin/mbed_overrides.o $
+  bin/mbed_pinmap_common.o $
+  bin/mbed_rtc_time.o $
+  bin/mbed_semihost_api.o $
+  bin/mbed_ticker_api.o $
+  bin/mbed_us_ticker_api.o $
+  bin/mbed_wait_api.o $
+  bin/peripheralpins.o $
+  bin/pinmap.o $
+  bin/port_api.o $
+  bin/pwmout_api.o $
+  bin/rawserial.o $
+  bin/retarget.o $
+  bin/rtc_api.o $
+  bin/serial.o $
+  bin/serial_api.o $
+  bin/serialbase.o $
+  bin/sleep.o $
+  bin/spi.o $
+  bin/spi_api.o $
+  bin/spislave.o $
+  bin/startup_stm32f401xe.o $
+  bin/stm32f4xx_hal.o $
+  bin/stm32f4xx_hal_adc.o $
+  bin/stm32f4xx_hal_adc_ex.o $
+  bin/stm32f4xx_hal_can.o $
+  bin/stm32f4xx_hal_cec.o $
+  bin/stm32f4xx_hal_cortex.o $
+  bin/stm32f4xx_hal_crc.o $
+  bin/stm32f4xx_hal_cryp.o $
+  bin/stm32f4xx_hal_cryp_ex.o $
+  bin/stm32f4xx_hal_dac.o $
+  bin/stm32f4xx_hal_dac_ex.o $
+  bin/stm32f4xx_hal_dcmi.o $
+  bin/stm32f4xx_hal_dcmi_ex.o $
+  bin/stm32f4xx_hal_dfsdm.o $
+  bin/stm32f4xx_hal_dma.o $
+  bin/stm32f4xx_hal_dma2d.o $
+  bin/stm32f4xx_hal_dma_ex.o $
+  bin/stm32f4xx_hal_dsi.o $
+  bin/stm32f4xx_hal_eth.o $
+  bin/stm32f4xx_hal_flash.o $
+  bin/stm32f4xx_hal_flash_ex.o $
+  bin/stm32f4xx_hal_flash_ramfunc.o $
+  bin/stm32f4xx_hal_fmpi2c.o $
+  bin/stm32f4xx_hal_fmpi2c_ex.o $
+  bin/stm32f4xx_hal_gpio.o $
+  bin/stm32f4xx_hal_hash.o $
+  bin/stm32f4xx_hal_hash_ex.o $
+  bin/stm32f4xx_hal_hcd.o $
+  bin/stm32f4xx_hal_i2c.o $
+  bin/stm32f4xx_hal_i2c_ex.o $
+  bin/stm32f4xx_hal_i2s.o $
+  bin/stm32f4xx_hal_i2s_ex.o $
+  bin/stm32f4xx_hal_irda.o $
+  bin/stm32f4xx_hal_iwdg.o $
+  bin/stm32f4xx_hal_lptim.o $
+  bin/stm32f4xx_hal_ltdc.o $
+  bin/stm32f4xx_hal_ltdc_ex.o $
+  bin/stm32f4xx_hal_msp_template.o $
+  bin/stm32f4xx_hal_nand.o $
+  bin/stm32f4xx_hal_nor.o $
+  bin/stm32f4xx_hal_pccard.o $
+  bin/stm32f4xx_hal_pcd.o $
+  bin/stm32f4xx_hal_pcd_ex.o $
+  bin/stm32f4xx_hal_pwr.o $
+  bin/stm32f4xx_hal_pwr_ex.o $
+  bin/stm32f4xx_hal_qspi.o $
+  bin/stm32f4xx_hal_rcc.o $
+  bin/stm32f4xx_hal_rcc_ex.o $
+  bin/stm32f4xx_hal_rng.o $
+  bin/stm32f4xx_hal_rtc.o $
+  bin/stm32f4xx_hal_rtc_ex.o $
+  bin/stm32f4xx_hal_sai.o $
+  bin/stm32f4xx_hal_sai_ex.o $
+  bin/stm32f4xx_hal_sd.o $
+  bin/stm32f4xx_hal_sdram.o $
+  bin/stm32f4xx_hal_smartcard.o $
+  bin/stm32f4xx_hal_spdifrx.o $
+  bin/stm32f4xx_hal_spi.o $
+  bin/stm32f4xx_hal_sram.o $
+  bin/stm32f4xx_hal_tim.o $
+  bin/stm32f4xx_hal_tim_ex.o $
+  bin/stm32f4xx_hal_uart.o $
+  bin/stm32f4xx_hal_usart.o $
+  bin/stm32f4xx_hal_wwdg.o $
+  bin/stm32f4xx_it.o $
+  bin/stm32f4xx_ll_fmc.o $
+  bin/stm32f4xx_ll_fsmc.o $
+  bin/stm32f4xx_ll_sdmmc.o $
+  bin/stm32f4xx_ll_usb.o $
+  bin/stream.o $
+  bin/sx1308.o $
+  bin/system_stm32f4xx.o $
+  bin/ticker.o $
+  bin/timeout.o $
+  bin/timer.o $
+  bin/timerevent.o $
+  bin/us_ticker.o $
+  bin/usb_device.o $
+  bin/usbd_cdc.o $
+  bin/usbd_cdc_if.o $
+  bin/usbd_conf.o $
+  bin/usbd_core.o $
+  bin/usbd_ctlreq.o $
+  bin/usbd_desc.o $
+  bin/usbd_ioreq.o $
+
+imports = $
+  -I src/MAIN $
+  -I src/SX1308HAL/inc $
+  -I src/mbed-dev/api $
+  -I src/mbed-dev/common $
+  -I src/mbed-dev/hal $
+  -I src/mbed-dev/targets/cmsis $
+  -I src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4 $
+  -I src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/TARGET_NUCLEO_F401RE $
+  -I src/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F4 $
+  -I src/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F4/TARGET_NUCLEO_F401RE $
+  -I src/usb_cdc/Inc $
+
+defines = $
+  -DARM_MATH_CM4 $
+  -DDEVICE_ANALOGIN=1 $
+  -DDEVICE_ERROR_RED=1 $
+  -DDEVICE_I2C=1 $
+  -DDEVICE_I2CSLAVE=1 $
+  -DDEVICE_INTERRUPTIN=1 $
+  -DDEVICE_PORTIN=1 $
+  -DDEVICE_PORTINOUT=1 $
+  -DDEVICE_PORTOUT=1 $
+  -DDEVICE_PWMOUT=1 $
+  -DDEVICE_RTC=1 $
+  -DDEVICE_SERIAL=1 $
+  -DDEVICE_SERIAL_ASYNCH=1 $
+  -DDEVICE_SERIAL_FC=1 $
+  -DDEVICE_SLEEP=1 $
+  -DDEVICE_SPI=1 $
+  -DDEVICE_SPISLAVE=1 $
+  -DDEVICE_STDIO_MESSAGES=1 $
+  -DSTM32F401xE $
+  -DTOOLCHAIN_GCC $
+  -DV2 $
+  -D__CORTEX_M4 $
+  -D__FPU_PRESENT=1 $
+
+cflags = $imports $defines $
+  -MMD $
+  -Os $
+  -fdata-sections $
+  -fdce $
+  -ffunction-sections $
+  -march=armv7e-m $
+  -mfloat-abi=hard $
+  -mfpu=fpv4-sp-d16 $
+  -mtune=cortex-m4 $
+  -s $
+  -w $
+
+cppflags = $
+  -Os $
+  -P $
+  -Wl,--gc-sections $
+  -Wl,--wrap,_calloc_r $
+  -Wl,--wrap,_free_r $
+  -Wl,--wrap,_malloc_r $
+  -Wl,--wrap,_memalign_r $
+  -Wl,--wrap,_realloc_r $
+  -Wl,--wrap,atexit $
+  -Wl,--wrap,exit $
+  -Wl,--wrap,main $
+  -Wl,-n $
+  -fdata-sections $
+  -fdce $
+  -ffunction-sections $
+  -mcpu=cortex-m4 $
+  -mfloat-abi=hard $
+  -mfpu=fpv4-sp-d16 $
+  -mthumb $
+  -s $
+
+ldflags = $
+  -Wl,--gc-sections $
+  -Wl,--wrap,_memalign_r $
+  -Wl,--wrap,main $
+  -Wl,-n $
+  -mcpu=cortex-m4 $
+  -mfloat-abi=hard $
+  -mfpu=fpv4-sp-d16 $
+  -mthumb $
+  -static $
+
+ldsyslibs = $
+  -Wl,--start-group $
+  -lstdc++ $
+  -lm $
+  -lc $
+  -lgcc $
+  -lnosys $
+  -Wl,--end-group $
+  -specs=nano.specs $
+
+asmflags = $
+  -MMD $
+  -march=armv7e-m $
+  -mfpu=fpv4-sp-d16 $
+  -mtune=cortex-m4 $
+
+allflags =
+#allflags = -Og -ggdb3
+
+rule asmcompile
+  command = $cc $asmflags -c $in -o $out $allflags
+
+rule compile
+  command = $cc $cflags -c $in -o $out $allflags
+
+rule cxxcompile
+  command = $cxx $cflags -fno-rtti -c $in -o $out $allflags
+
+rule preproc
+  command = $cpp $cppflags $in -o $out
+
+rule link
+  command = $ld --output $out $objs $ldflags -T bin/lgw_fw_usb.link_script.ld -Wl,-Map=bin/lgw_fw_usb.map $ldsyslibs $allflags
+
+rule elf2hex
+  command = arm-none-eabi-objcopy -O ihex $in $out
+
+rule elf2bin
+  command = arm-none-eabi-objcopy -O ihex $in $out
+
+rule hex2dfu
+  command = dfu-convert -i $in $out
+
+build bin/lgw_fw_usb.link_script.ld: preproc src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/TARGET_NUCLEO_F401RE/TOOLCHAIN_GCC_ARM/STM32F401XE.ld
+build bin/startup_stm32f401xe.o: asmcompile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/TARGET_NUCLEO_F401RE/TOOLCHAIN_GCC_ARM/startup_stm32f401xe.S
+
+build bin/analogin.o: cxxcompile src/mbed-dev/common/AnalogIn.cpp
+build bin/analogin_api.o: compile src/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F4/analogin_api.c
+build bin/analogout_api.o: compile src/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F4/analogout_api.c
+build bin/board.o: cxxcompile src/MAIN/board.cpp
+build bin/busin.o: cxxcompile src/mbed-dev/common/BusIn.cpp
+build bin/businout.o: cxxcompile src/mbed-dev/common/BusInOut.cpp
+build bin/busout.o: cxxcompile src/mbed-dev/common/BusOut.cpp
+build bin/callchain.o: cxxcompile src/mbed-dev/common/CallChain.cpp
+build bin/can.o: cxxcompile src/mbed-dev/common/CAN.cpp
+build bin/can_api.o: compile src/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F4/can_api.c
+build bin/cmdusb.o: cxxcompile src/MAIN/cmdUSB.cpp
+build bin/cmsis_nvic.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/TARGET_NUCLEO_F401RE/cmsis_nvic.c
+build bin/entropy_hardware_poll.o: compile src/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F4/entropy_hardware_poll.c
+build bin/ethernet.o: cxxcompile src/mbed-dev/common/Ethernet.cpp
+build bin/filebase.o: cxxcompile src/mbed-dev/common/FileBase.cpp
+build bin/filelike.o: cxxcompile src/mbed-dev/common/FileLike.cpp
+build bin/filepath.o: cxxcompile src/mbed-dev/common/FilePath.cpp
+build bin/filesystemlike.o: cxxcompile src/mbed-dev/common/FileSystemLike.cpp
+build bin/gpio_api.o: compile src/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F4/gpio_api.c
+build bin/gpio_irq_api.o: compile src/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F4/gpio_irq_api.c
+build bin/hal_tick.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/TARGET_NUCLEO_F401RE/hal_tick.c
+build bin/i2c.o: cxxcompile src/mbed-dev/common/I2C.cpp
+build bin/i2c_api.o: compile src/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F4/i2c_api.c
+build bin/i2cslave.o: cxxcompile src/mbed-dev/common/I2CSlave.cpp
+build bin/interruptin.o: cxxcompile src/mbed-dev/common/InterruptIn.cpp
+build bin/interruptmanager.o: cxxcompile src/mbed-dev/common/InterruptManager.cpp
+build bin/localfilesystem.o: cxxcompile src/mbed-dev/common/LocalFileSystem.cpp
+build bin/loragw_hal.o: cxxcompile src/SX1308HAL/src/loragw_hal.cpp
+build bin/loragw_reg.o: cxxcompile src/SX1308HAL/src/loragw_reg.cpp
+build bin/main.o: cxxcompile src/MAIN/main.cpp
+build bin/mbed_alloc_wrappers.o: cxxcompile src/mbed-dev/common/mbed_alloc_wrappers.cpp
+build bin/mbed_assert.o: compile src/mbed-dev/common/mbed_assert.c
+build bin/mbed_board.o: compile src/mbed-dev/common/mbed_board.c
+build bin/mbed_critical.o: compile src/mbed-dev/common/mbed_critical.c
+build bin/mbed_error.o: compile src/mbed-dev/common/mbed_error.c
+build bin/mbed_gpio.o: compile src/mbed-dev/common/mbed_gpio.c
+build bin/mbed_interface.o: compile src/mbed-dev/common/mbed_interface.c
+build bin/mbed_lp_ticker_api.o: compile src/mbed-dev/common/mbed_lp_ticker_api.c
+build bin/mbed_mem_trace.o: compile src/mbed-dev/common/mbed_mem_trace.c
+build bin/mbed_overrides.o: compile src/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F4/mbed_overrides.c
+build bin/mbed_pinmap_common.o: compile src/mbed-dev/common/mbed_pinmap_common.c
+build bin/mbed_rtc_time.o: cxxcompile src/mbed-dev/common/mbed_rtc_time.cpp
+build bin/mbed_semihost_api.o: compile src/mbed-dev/common/mbed_semihost_api.c
+build bin/mbed_ticker_api.o: compile src/mbed-dev/common/mbed_ticker_api.c
+build bin/mbed_us_ticker_api.o: compile src/mbed-dev/common/mbed_us_ticker_api.c
+build bin/mbed_wait_api.o: compile src/mbed-dev/common/mbed_wait_api.c
+build bin/peripheralpins.o: compile src/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F4/TARGET_NUCLEO_F401RE/PeripheralPins.c
+build bin/pinmap.o: compile src/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F4/pinmap.c
+build bin/port_api.o: compile src/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F4/port_api.c
+build bin/pwmout_api.o: compile src/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F4/pwmout_api.c
+build bin/rawserial.o: cxxcompile src/mbed-dev/common/RawSerial.cpp
+build bin/retarget.o: cxxcompile src/mbed-dev/common/retarget.cpp
+build bin/rtc_api.o: compile src/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F4/rtc_api.c
+build bin/serial.o: cxxcompile src/mbed-dev/common/Serial.cpp
+build bin/serial_api.o: compile src/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F4/serial_api.c
+build bin/serialbase.o: cxxcompile src/mbed-dev/common/SerialBase.cpp
+build bin/sleep.o: compile src/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F4/sleep.c
+build bin/spi.o: cxxcompile src/mbed-dev/common/SPI.cpp
+build bin/spi_api.o: compile src/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F4/spi_api.c
+build bin/spislave.o: cxxcompile src/mbed-dev/common/SPISlave.cpp
+build bin/stm32f4xx_hal.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal.c
+build bin/stm32f4xx_hal_adc.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_adc.c
+build bin/stm32f4xx_hal_adc_ex.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_adc_ex.c
+build bin/stm32f4xx_hal_can.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_can.c
+build bin/stm32f4xx_hal_cec.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_cec.c
+build bin/stm32f4xx_hal_cortex.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_cortex.c
+build bin/stm32f4xx_hal_crc.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_crc.c
+build bin/stm32f4xx_hal_cryp.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_cryp.c
+build bin/stm32f4xx_hal_cryp_ex.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_cryp_ex.c
+build bin/stm32f4xx_hal_dac.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_dac.c
+build bin/stm32f4xx_hal_dac_ex.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_dac_ex.c
+build bin/stm32f4xx_hal_dcmi.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_dcmi.c
+build bin/stm32f4xx_hal_dcmi_ex.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_dcmi_ex.c
+build bin/stm32f4xx_hal_dfsdm.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_dfsdm.c
+build bin/stm32f4xx_hal_dma.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_dma.c
+build bin/stm32f4xx_hal_dma2d.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_dma2d.c
+build bin/stm32f4xx_hal_dma_ex.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_dma_ex.c
+build bin/stm32f4xx_hal_dsi.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_dsi.c
+build bin/stm32f4xx_hal_eth.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_eth.c
+build bin/stm32f4xx_hal_flash.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_flash.c
+build bin/stm32f4xx_hal_flash_ex.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_flash_ex.c
+build bin/stm32f4xx_hal_flash_ramfunc.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_flash_ramfunc.c
+build bin/stm32f4xx_hal_fmpi2c.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_fmpi2c.c
+build bin/stm32f4xx_hal_fmpi2c_ex.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_fmpi2c_ex.c
+build bin/stm32f4xx_hal_gpio.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_gpio.c
+build bin/stm32f4xx_hal_hash.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_hash.c
+build bin/stm32f4xx_hal_hash_ex.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_hash_ex.c
+build bin/stm32f4xx_hal_hcd.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_hcd.c
+build bin/stm32f4xx_hal_i2c.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_i2c.c
+build bin/stm32f4xx_hal_i2c_ex.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_i2c_ex.c
+build bin/stm32f4xx_hal_i2s.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_i2s.c
+build bin/stm32f4xx_hal_i2s_ex.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_i2s_ex.c
+build bin/stm32f4xx_hal_irda.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_irda.c
+build bin/stm32f4xx_hal_iwdg.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_iwdg.c
+build bin/stm32f4xx_hal_lptim.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_lptim.c
+build bin/stm32f4xx_hal_ltdc.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_ltdc.c
+build bin/stm32f4xx_hal_ltdc_ex.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_ltdc_ex.c
+build bin/stm32f4xx_hal_msp_template.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_msp_template.c
+build bin/stm32f4xx_hal_nand.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_nand.c
+build bin/stm32f4xx_hal_nor.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_nor.c
+build bin/stm32f4xx_hal_pccard.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_pccard.c
+build bin/stm32f4xx_hal_pcd.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_pcd.c
+build bin/stm32f4xx_hal_pcd_ex.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_pcd_ex.c
+build bin/stm32f4xx_hal_pwr.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_pwr.c
+build bin/stm32f4xx_hal_pwr_ex.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_pwr_ex.c
+build bin/stm32f4xx_hal_qspi.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_qspi.c
+build bin/stm32f4xx_hal_rcc.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_rcc.c
+build bin/stm32f4xx_hal_rcc_ex.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_rcc_ex.c
+build bin/stm32f4xx_hal_rng.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_rng.c
+build bin/stm32f4xx_hal_rtc.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_rtc.c
+build bin/stm32f4xx_hal_rtc_ex.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_rtc_ex.c
+build bin/stm32f4xx_hal_sai.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_sai.c
+build bin/stm32f4xx_hal_sai_ex.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_sai_ex.c
+build bin/stm32f4xx_hal_sd.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_sd.c
+build bin/stm32f4xx_hal_sdram.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_sdram.c
+build bin/stm32f4xx_hal_smartcard.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_smartcard.c
+build bin/stm32f4xx_hal_spdifrx.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_spdifrx.c
+build bin/stm32f4xx_hal_spi.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_spi.c
+build bin/stm32f4xx_hal_sram.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_sram.c
+build bin/stm32f4xx_hal_tim.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_tim.c
+build bin/stm32f4xx_hal_tim_ex.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_tim_ex.c
+build bin/stm32f4xx_hal_uart.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_uart.c
+build bin/stm32f4xx_hal_usart.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_usart.c
+build bin/stm32f4xx_hal_wwdg.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_hal_wwdg.c
+build bin/stm32f4xx_it.o: cxxcompile src/usb_cdc/Src/stm32f4xx_it.cpp
+build bin/stm32f4xx_ll_fmc.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_ll_fmc.c
+build bin/stm32f4xx_ll_fsmc.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_ll_fsmc.c
+build bin/stm32f4xx_ll_sdmmc.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_ll_sdmmc.c
+build bin/stm32f4xx_ll_usb.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/stm32f4xx_ll_usb.c
+build bin/stream.o: cxxcompile src/mbed-dev/common/Stream.cpp
+build bin/sx1308.o: cxxcompile src/SX1308HAL/src/sx1308.cpp
+build bin/system_stm32f4xx.o: compile src/mbed-dev/targets/cmsis/TARGET_STM/TARGET_STM32F4/TARGET_NUCLEO_F401RE/system_stm32f4xx.c
+build bin/ticker.o: cxxcompile src/mbed-dev/common/Ticker.cpp
+build bin/timeout.o: cxxcompile src/mbed-dev/common/Timeout.cpp
+build bin/timer.o: cxxcompile src/mbed-dev/common/Timer.cpp
+build bin/timerevent.o: cxxcompile src/mbed-dev/common/TimerEvent.cpp
+build bin/us_ticker.o: compile src/mbed-dev/targets/hal/TARGET_STM/TARGET_STM32F4/us_ticker.c
+build bin/usb_device.o: cxxcompile src/usb_cdc/Src/usb_device.cpp
+build bin/usbd_cdc.o: cxxcompile src/usb_cdc/Src/usbd_cdc.cpp
+build bin/usbd_cdc_if.o: cxxcompile src/usb_cdc/Src/usbd_cdc_if.cpp
+build bin/usbd_conf.o: cxxcompile src/usb_cdc/Src/usbd_conf.cpp
+build bin/usbd_core.o: cxxcompile src/usb_cdc/Src/usbd_core.cpp
+build bin/usbd_ctlreq.o: cxxcompile src/usb_cdc/Src/usbd_ctlreq.cpp
+build bin/usbd_desc.o: cxxcompile src/usb_cdc/Src/usbd_desc.cpp
+build bin/usbd_ioreq.o: cxxcompile src/usb_cdc/Src/usbd_ioreq.cpp
+
+build bin/lgw_fw_usb.elf: link bin/lgw_fw_usb.link_script.ld bin/analogin.o bin/analogin_api.o bin/analogout_api.o bin/board.o bin/busin.o bin/businout.o bin/busout.o bin/callchain.o bin/can.o bin/can_api.o bin/cmdusb.o bin/cmsis_nvic.o bin/entropy_hardware_poll.o bin/ethernet.o bin/filebase.o bin/filelike.o bin/filepath.o bin/filesystemlike.o bin/gpio_api.o bin/gpio_irq_api.o bin/hal_tick.o bin/i2c.o bin/i2c_api.o bin/i2cslave.o bin/interruptin.o bin/interruptmanager.o bin/localfilesystem.o bin/loragw_hal.o bin/loragw_reg.o bin/main.o bin/mbed_alloc_wrappers.o bin/mbed_assert.o bin/mbed_board.o bin/mbed_critical.o bin/mbed_error.o bin/mbed_gpio.o bin/mbed_interface.o bin/mbed_lp_ticker_api.o bin/mbed_mem_trace.o bin/mbed_overrides.o bin/mbed_pinmap_common.o bin/mbed_rtc_time.o bin/mbed_semihost_api.o bin/mbed_ticker_api.o bin/mbed_us_ticker_api.o bin/mbed_wait_api.o bin/peripheralpins.o bin/pinmap.o bin/port_api.o bin/pwmout_api.o bin/rawserial.o bin/retarget.o bin/rtc_api.o bin/serial.o bin/serial_api.o bin/serialbase.o bin/sleep.o bin/spi.o bin/spi_api.o bin/spislave.o bin/startup_stm32f401xe.o bin/stm32f4xx_hal.o bin/stm32f4xx_hal_adc.o bin/stm32f4xx_hal_adc_ex.o bin/stm32f4xx_hal_can.o bin/stm32f4xx_hal_cec.o bin/stm32f4xx_hal_cortex.o bin/stm32f4xx_hal_crc.o bin/stm32f4xx_hal_cryp.o bin/stm32f4xx_hal_cryp_ex.o bin/stm32f4xx_hal_dac.o bin/stm32f4xx_hal_dac_ex.o bin/stm32f4xx_hal_dcmi.o bin/stm32f4xx_hal_dcmi_ex.o bin/stm32f4xx_hal_dfsdm.o bin/stm32f4xx_hal_dma.o bin/stm32f4xx_hal_dma2d.o bin/stm32f4xx_hal_dma_ex.o bin/stm32f4xx_hal_dsi.o bin/stm32f4xx_hal_eth.o bin/stm32f4xx_hal_flash.o bin/stm32f4xx_hal_flash_ex.o bin/stm32f4xx_hal_flash_ramfunc.o bin/stm32f4xx_hal_fmpi2c.o bin/stm32f4xx_hal_fmpi2c_ex.o bin/stm32f4xx_hal_gpio.o bin/stm32f4xx_hal_hash.o bin/stm32f4xx_hal_hash_ex.o bin/stm32f4xx_hal_hcd.o bin/stm32f4xx_hal_i2c.o bin/stm32f4xx_hal_i2c_ex.o bin/stm32f4xx_hal_i2s.o bin/stm32f4xx_hal_i2s_ex.o bin/stm32f4xx_hal_irda.o bin/stm32f4xx_hal_iwdg.o bin/stm32f4xx_hal_lptim.o bin/stm32f4xx_hal_ltdc.o bin/stm32f4xx_hal_ltdc_ex.o bin/stm32f4xx_hal_msp_template.o bin/stm32f4xx_hal_nand.o bin/stm32f4xx_hal_nor.o bin/stm32f4xx_hal_pccard.o bin/stm32f4xx_hal_pcd.o bin/stm32f4xx_hal_pcd_ex.o bin/stm32f4xx_hal_pwr.o bin/stm32f4xx_hal_pwr_ex.o bin/stm32f4xx_hal_qspi.o bin/stm32f4xx_hal_rcc.o bin/stm32f4xx_hal_rcc_ex.o bin/stm32f4xx_hal_rng.o bin/stm32f4xx_hal_rtc.o bin/stm32f4xx_hal_rtc_ex.o bin/stm32f4xx_hal_sai.o bin/stm32f4xx_hal_sai_ex.o bin/stm32f4xx_hal_sd.o bin/stm32f4xx_hal_sdram.o bin/stm32f4xx_hal_smartcard.o bin/stm32f4xx_hal_spdifrx.o bin/stm32f4xx_hal_spi.o bin/stm32f4xx_hal_sram.o bin/stm32f4xx_hal_tim.o bin/stm32f4xx_hal_tim_ex.o bin/stm32f4xx_hal_uart.o bin/stm32f4xx_hal_usart.o bin/stm32f4xx_hal_wwdg.o bin/stm32f4xx_it.o bin/stm32f4xx_ll_fmc.o bin/stm32f4xx_ll_fsmc.o bin/stm32f4xx_ll_sdmmc.o bin/stm32f4xx_ll_usb.o bin/stream.o bin/sx1308.o bin/system_stm32f4xx.o bin/ticker.o bin/timeout.o bin/timer.o bin/timerevent.o bin/us_ticker.o bin/usb_device.o bin/usbd_cdc.o bin/usbd_cdc_if.o bin/usbd_conf.o bin/usbd_core.o bin/usbd_ctlreq.o bin/usbd_desc.o bin/usbd_ioreq.o
+
+build bin/lgw_fw_usb.hex: elf2hex bin/lgw_fw_usb.elf
+
+build bin/lgw_fw_usb.bin: elf2bin bin/lgw_fw_usb.elf
+
+build bin/lgw_fw_usb.dfu: hex2dfu bin/lgw_fw_usb.hex
+
+default bin/lgw_fw_usb.dfu

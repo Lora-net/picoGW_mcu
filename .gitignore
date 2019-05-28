@@ -1,0 +1,6 @@
+/bin/*.o
+/bin/*.d
+/bin/lgw_fw_usb*
+/.ninja_deps
+/.ninja_log
+

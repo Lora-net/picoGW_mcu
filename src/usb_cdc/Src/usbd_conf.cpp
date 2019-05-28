@@ -57,7 +57,7 @@ void SystemClock_Config(void);
 *******************************************************************************/
 /* MSP Init */
 
-#include "CmdUSB.h"
+#include "cmdUSB.h"
 
 void HAL_PCD_MspInit(PCD_HandleTypeDef* pcdHandle)
 {
